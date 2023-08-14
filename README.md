@@ -2,7 +2,7 @@
 
 ## Description
 
-This is a demo of Hyperledger Besu, a Java implementation of the Ethereum protocol.
+Lorem Ipsum
 
 ## Prerequisites
 
