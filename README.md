@@ -2,11 +2,17 @@
 
 ## Description
 
-Lorem Ipsum
+Hyperledger Besu is an open source Ethereum client
 
 ## Prerequisites
 
 ## Commands
+
+Run docker compose 
+
+```bash
+docker-compose up -d
+```
 
 ## Architecture
 
