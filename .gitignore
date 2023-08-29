@@ -3,9 +3,17 @@ networkFiles/
 
 besu.networks
 besu.ports
-DATABASE_METADATA.json
 
-caches/*
-database/*
-uploads/*
+network/node-1/data/caches/*
+network/node-1/data/database/*
+
+network/node-2/data/caches/*
+network/node-2/data/database/*
+
+network/node-3/data/caches/*
+network/node-3/data/database/*
+
+network/node-4/data/caches/*
+network/node-4/data/database/*
+
 
