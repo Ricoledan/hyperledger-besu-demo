@@ -1,2 +1,6 @@
 .idea
 networkFiles/
+
+besu.networks
+besu.ports
+DATABASE_METADATA.json
