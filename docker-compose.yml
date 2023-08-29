@@ -8,7 +8,12 @@ services:
     environment:
       - BESU_RPC_HTTP_ENABLED=true
       - BESU_RPC_WS_ENABLED=true
+      - BESU_RPC_HTTP_API=ETH,NET,WEB3,ADMIN,DEBUG,PERM,QBFT
+      - BESU_RPC_WS_API=ETH,NET,WEB3,ADMIN,DEBUG,PERM,QBFT
+      - BESU_RPC_HTTP_CORS_ORIGINS=all
       - BESU_NETWORK=goerli
+      - BESU_HOST_ALLOWLIST=*
       - BESU_GENESIS_FILE=/config/genesis.json
+      - BESU_DATA_PATH=/config/node-1/data
     volumes:
-      - ./config:/config
+      - ./qbft-network:/config
