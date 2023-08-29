@@ -4,3 +4,8 @@ networkFiles/
 besu.networks
 besu.ports
 DATABASE_METADATA.json
+
+caches/*
+database/*
+uploads/*
+
