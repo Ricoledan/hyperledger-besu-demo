@@ -1,0 +1,20 @@
+services:
+  client-node:
+    image: hyperledger/besu:latest
+    ports:
+      - "30304:30304"
+      - "8549:8549"
+    environment:
+      - BESU_RPC_HTTP_ENABLED=true
+      - BESU_RPC_HTTP_PORT=8549
+      - BESU_RPC_WS_ENABLED=true
+      - BESU_RPC_HTTP_API=ETH,NET,QBFT
+      - BESU_RPC_HTTP_CORS_ORIGINS=all
+      - BESU_HOST_ALLOWLIST=*
+      - BESU_GENESIS_FILE=/config/genesis.json
+      - BESU_DATA_PATH=/config/node/data
+      - BESU_P2P_PORT=30304
+      - BESU_BOOTNODES=enode://<url>@<ip>:port
+    volumes:
+      - ./client:/config
+
