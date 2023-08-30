@@ -16,4 +16,7 @@ network/node-3/data/database/*
 network/node-4/data/caches/*
 network/node-4/data/database/*
 
-
+network/node-1/data/DATABASE_METADATA.json
+network/node-2/data/DATABASE_METADATA.json
+network/node-3/data/DATABASE_METADATA.json
+network/node-4/data/DATABASE_METADATA.json

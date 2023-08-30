@@ -8,7 +8,7 @@ Hyperledger Besu is an open source Ethereum client
 
 ## Commands
 
-### Application
+### Set Up
 
 Run docker compose 
 
@@ -16,14 +16,7 @@ Run docker compose
 docker-compose up -d
 ```
 
-Run docker compose with build for dev testing changes
-
-```bash
-docker-compose up --build -d
-
-```
-
-###
+### Besu
 
 Returns the chain ID of the network
 
@@ -39,9 +32,7 @@ curl -X POST --data '{"jsonrpc":"2.0","method":"eth_syncing","params":[],"id":1}
 
 ### 
 
-```bash
-besu operator generate-blockchain-config --config-file=qbftConfigFile.json --to=networkFiles --private-key-file-name=key
-```
+
 
 ## Architecture
 
