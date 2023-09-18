@@ -17,4 +17,3 @@ services:
       - BESU_BOOTNODES=enode://<url>@<ip>:port
     volumes:
       - ./client:/config
-
