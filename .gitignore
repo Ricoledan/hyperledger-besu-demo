@@ -23,4 +23,4 @@ network/node-3/data/DATABASE_METADATA.json
 network/node-4/data/DATABASE_METADATA.json
 
 services/blockscout-db-data/*
-services/redis-data/*
+services/blockscout-redis-data/*
