@@ -4,7 +4,7 @@ services:
   blockscout-db:
     image: postgres:14
     restart: always
-    container_name: 'postgres'
+    container_name: 'blockscout-db'
     command: postgres -c 'max_connections=200'
     environment:
       POSTGRES_PASSWORD: ''

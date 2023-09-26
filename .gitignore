@@ -22,5 +22,8 @@ network/node-2/data/DATABASE_METADATA.json
 network/node-3/data/DATABASE_METADATA.json
 network/node-4/data/DATABASE_METADATA.json
 
-services/blockscout-db-data/*
-services/blockscout-redis-data/*
+# persistent data stored in docker volumes`
+services/blockscout/blockscout-db-data/*
+services/blockscout/blockscout-redis-data/*
+services/blockscout/stats-db-data/*
+services/blockscout/logs/*

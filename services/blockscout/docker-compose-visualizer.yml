@@ -8,6 +8,6 @@ services:
     restart: always
     container_name: 'visualizer'
     env_file:
-      - ./env/.env.visualizer
+      - ../env/.env.visualizer
     ports:
       - 8152:8050

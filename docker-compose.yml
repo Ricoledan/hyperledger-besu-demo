@@ -1,58 +1,88 @@
 services:
   besu-node1:
     extends:
-      file: ./services/nodes/docker-compose-besu-node1.yml
+      file: services/nodes/docker-compose-besu-node1.yml
       service: besu-node1
 
   besu-node2:
     extends:
-      file: ./services/nodes/docker-compose-besu-node2.yml
+      file: services/nodes/docker-compose-besu-node2.yml
       service: besu-node2
 
   besu-node3:
     extends:
-      file: ./services/nodes/docker-compose-besu-node3.yml
+      file: services/nodes/docker-compose-besu-node3.yml
       service: besu-node3
 
   besu-node4:
     extends:
-      file: ./services/nodes/docker-compose-besu-node4.yml
+      file: services/nodes/docker-compose-besu-node4.yml
       service: besu-node4
 
-#  client-node:
-#    extends:
-#      file: ./services/nodes/docker-compose-client-node1.yml
-#      service: client-node
+  #  client-node:
+  #    extends:
+  #      file: ./services/nodes/docker-compose-client-node1.yml
+  #      service: client-node
 
-  blockscout:
+  blockscout-backend:
     extends:
-      file: ./services/docker-compose-blockscout.yml
-      service: blockscout
+      file: services/blockscout/docker-compose-blockscout-backend.yml
+      service: blockscout-backend
 
   blockscout-db:
     extends:
-      file: ./services/docker-compose-blockscout-db.yml
+      file: services/blockscout/docker-compose-blockscout-db.yml
       service: blockscout-db
 
   blockscout-redis-db:
     extends:
-      file: ./services/docker-compose-blockscout-redis.yml
+      file: services/blockscout/docker-compose-blockscout-redis.yml
       service: blockscout-redis-db
-
-  sig-provider:
-    extends:
-      file: ./services/docker-compose-sig-provider.yml
-      service: sig-provider
 
   smart-contract-verifier:
     extends:
-      file: ./services/docker-compose-smart-contract-verifier.yml
+      file: services/blockscout/docker-compose-smart-contract-verifier.yml
       service: smart-contract-verifier
 
   visualizer:
     extends:
-      file: ./services/docker-compose-visualizer.yml
+      file: services/blockscout/docker-compose-visualizer.yml
       service: visualizer
+
+  sig-provider:
+    extends:
+      file: services/blockscout/docker-compose-sig-provider.yml
+      service: sig-provider
+
+  blockscout-frontend:
+    depends_on:
+      - blockscout-backend
+    extends:
+      file: ./services/blockscout/docker-compose-blockscout-frontend.yml
+      service: blockscout-frontend
+
+  stats-db:
+    depends_on:
+      - blockscout-backend
+    extends:
+      file: ./services/blockscout/docker-compose-stats.yml
+      service: stats-db
+
+  stats:
+    depends_on:
+      - stats-db
+    extends:
+      file: ./services/blockscout/docker-compose-stats.yml
+      service: stats
+
+  proxy:
+    depends_on:
+      - blockscout-backend
+      - blockscout-frontend
+      - stats
+    extends:
+      file: ./services/blockscout/docker-compose-nginx.yml
+      service: proxy
 
 networks:
   besu-network:
