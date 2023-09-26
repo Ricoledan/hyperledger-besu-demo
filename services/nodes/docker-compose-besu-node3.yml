@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  besu-node3:
+    image: hyperledger/besu:latest
+    ports:
+      - "30305:30305"
+      - "8547:8547"
+    depends_on:
+      - besu-node1
+    environment:
+      - BESU_RPC_HTTP_ENABLED=true
+      - BESU_RPC_HTTP_PORT=8547
+      - BESU_RPC_HTTP_API=ETH,NET,QBFT
+      - BESU_RPC_HTTP_CORS_ORIGINS=all
+      - BESU_HOST_ALLOWLIST=*
+      - BESU_GENESIS_FILE=/config/genesis.json
+      - BESU_DATA_PATH=/config/node-3/data
+      - BESU_P2P_PORT=30305
+      - BESU_BOOTNODES=enode://d42b7cb10c40d786ff689a83a9fe8f22a41a04962737f7528751c7cc6506fa52a311fdc6f0ba9796af3a55d7317f62a5cfb5f001995f2dc3f38b3151c8d37650@172.25.0.2:30303
+    volumes:
+      - ../../network:/config
+    networks:
+      - besu-network

@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+    besu-node1:
+      image: hyperledger/besu:latest
+      ports:
+        - "30303:30303"
+        - "8545:8545"
+      environment:
+        - BESU_RPC_HTTP_ENABLED=true
+        - BESU_RPC_HTTP_API=ETH,NET,QBFT
+        - BESU_RPC_HTTP_CORS_ORIGINS=all
+        - BESU_HOST_ALLOWLIST=* # lock this down
+        - BESU_GENESIS_FILE=/config/genesis.json
+        - BESU_DATA_PATH=/config/node-1/data
+      volumes:
+        - ../../network:/config
+      networks:
+        besu-network:
+          ipv4_address: 172.25.0.2

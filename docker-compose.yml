@@ -1,88 +1,58 @@
 services:
   besu-node1:
-    image: hyperledger/besu:latest
-    ports:
-      - "30303:30303"
-      - "8545:8545"
-    environment:
-      - BESU_RPC_HTTP_ENABLED=true
-      - BESU_RPC_HTTP_API=ETH,NET,QBFT
-      - BESU_RPC_HTTP_CORS_ORIGINS=all
-      - BESU_HOST_ALLOWLIST=* # lock this down
-      - BESU_GENESIS_FILE=/config/genesis.json
-      - BESU_DATA_PATH=/config/node-1/data
-    volumes:
-      - ./network:/config
-    networks:
-      besu-network:
-        ipv4_address: 172.25.0.2
+    extends:
+      file: ./services/nodes/docker-compose-besu-node1.yml
+      service: besu-node1
 
   besu-node2:
-    image: hyperledger/besu:latest
-    ports:
-      - "30304:30304"
-      - "8549:8549"
-    depends_on:
-      - besu-node1
-    environment:
-      - BESU_RPC_HTTP_ENABLED=true
-      - BESU_RPC_HTTP_PORT=8549
-      - BESU_RPC_WS_ENABLED=true
-      - BESU_RPC_HTTP_API=ETH,NET,QBFT
-      - BESU_RPC_HTTP_CORS_ORIGINS=all
-      - BESU_HOST_ALLOWLIST=*
-      - BESU_GENESIS_FILE=/config/genesis.json
-      - BESU_DATA_PATH=/config/node-2/data
-      - BESU_P2P_PORT=30304
-      - BESU_BOOTNODES=enode://d42b7cb10c40d786ff689a83a9fe8f22a41a04962737f7528751c7cc6506fa52a311fdc6f0ba9796af3a55d7317f62a5cfb5f001995f2dc3f38b3151c8d37650@172.25.0.2:30303
-    volumes:
-      - ./network:/config
-    networks:
-      - besu-network
+    extends:
+      file: ./services/nodes/docker-compose-besu-node2.yml
+      service: besu-node2
 
   besu-node3:
-    image: hyperledger/besu:latest
-    ports:
-      - "30305:30305"
-      - "8547:8547"
-    depends_on:
-      - besu-node1
-    environment:
-      - BESU_RPC_HTTP_ENABLED=true
-      - BESU_RPC_HTTP_PORT=8547
-      - BESU_RPC_HTTP_API=ETH,NET,QBFT
-      - BESU_RPC_HTTP_CORS_ORIGINS=all
-      - BESU_HOST_ALLOWLIST=*
-      - BESU_GENESIS_FILE=/config/genesis.json
-      - BESU_DATA_PATH=/config/node-3/data
-      - BESU_P2P_PORT=30305
-      - BESU_BOOTNODES=enode://d42b7cb10c40d786ff689a83a9fe8f22a41a04962737f7528751c7cc6506fa52a311fdc6f0ba9796af3a55d7317f62a5cfb5f001995f2dc3f38b3151c8d37650@172.25.0.2:30303
-    volumes:
-      - ./network:/config
-    networks:
-      - besu-network
+    extends:
+      file: ./services/nodes/docker-compose-besu-node3.yml
+      service: besu-node3
 
   besu-node4:
-    image: hyperledger/besu:latest
-    ports:
-        - "30306:30306"
-        - "8548:8548"
-    depends_on:
-      - besu-node1
-    environment:
-      - BESU_RPC_HTTP_ENABLED=true
-      - BESU_RPC_HTTP_PORT=8548
-      - BESU_RPC_HTTP_API=ETH,NET,QBFT
-      - BESU_RPC_HTTP_CORS_ORIGINS=all
-      - BESU_HOST_ALLOWLIST=*
-      - BESU_GENESIS_FILE=/config/genesis.json
-      - BESU_DATA_PATH=/config/node-4/data
-      - BESU_P2P_PORT=30306
-      - BESU_BOOTNODES=enode://d42b7cb10c40d786ff689a83a9fe8f22a41a04962737f7528751c7cc6506fa52a311fdc6f0ba9796af3a55d7317f62a5cfb5f001995f2dc3f38b3151c8d37650@172.25.0.2:30303
-    volumes:
-      - ./network:/config
-    networks:
-      - besu-network
+    extends:
+      file: ./services/nodes/docker-compose-besu-node4.yml
+      service: besu-node4
+
+#  client-node:
+#    extends:
+#      file: ./services/nodes/docker-compose-client-node1.yml
+#      service: client-node
+
+  blockscout:
+    extends:
+      file: ./services/docker-compose-blockscout.yml
+      service: blockscout
+
+  blockscout-db:
+    extends:
+      file: ./services/docker-compose-blockscout-db.yml
+      service: blockscout-db
+
+  blockscout-redis-db:
+    extends:
+      file: ./services/docker-compose-blockscout-redis.yml
+      service: blockscout-redis-db
+
+  sig-provider:
+    extends:
+      file: ./services/docker-compose-sig-provider.yml
+      service: sig-provider
+
+  smart-contract-verifier:
+    extends:
+      file: ./services/docker-compose-smart-contract-verifier.yml
+      service: smart-contract-verifier
+
+  visualizer:
+    extends:
+      file: ./services/docker-compose-visualizer.yml
+      service: visualizer
 
 networks:
   besu-network:
