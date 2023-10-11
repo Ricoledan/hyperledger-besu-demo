@@ -1,3 +1,5 @@
+version: "3.6"
+
 services:
   besu-node1:
     extends:
@@ -19,70 +21,61 @@ services:
       file: services/nodes/docker-compose-besu-node4.yml
       service: besu-node4
 
-  #  client-node:
-  #    extends:
-  #      file: ./services/nodes/docker-compose-client-node1.yml
-  #      service: client-node
-
-  blockscout-backend:
-    extends:
-      file: services/blockscout/docker-compose-blockscout-backend.yml
-      service: blockscout-backend
-
-  blockscout-db:
-    extends:
-      file: services/blockscout/docker-compose-blockscout-db.yml
-      service: blockscout-db
-
-  blockscout-redis-db:
-    extends:
-      file: services/blockscout/docker-compose-blockscout-redis.yml
-      service: blockscout-redis-db
-
-  smart-contract-verifier:
-    extends:
-      file: services/blockscout/docker-compose-smart-contract-verifier.yml
-      service: smart-contract-verifier
-
-  visualizer:
-    extends:
-      file: services/blockscout/docker-compose-visualizer.yml
-      service: visualizer
-
-  sig-provider:
-    extends:
-      file: services/blockscout/docker-compose-sig-provider.yml
-      service: sig-provider
-
-  blockscout-frontend:
+  api:
+    image: web3labs/epirus-free-api:latest
+    environment:
+      - NODE_ENDPOINT=http://localhost:8545
+      - MONGO_CLIENT_URI=mongodb://mongodb:27017
+      - REINDEX_ENDPOINT=http://ingestion/reindex/
+      - MONGO_DB_NAME=epirus
+      - MONGO_CREATE_INDICES=true
     depends_on:
-      - blockscout-backend
-    extends:
-      file: ./services/blockscout/docker-compose-blockscout-frontend.yml
-      service: blockscout-frontend
+      - mongodb
+    networks:
+      - epirus
 
-  stats-db:
-    depends_on:
-      - blockscout-backend
-    extends:
-      file: ./services/blockscout/docker-compose-stats.yml
-      service: stats-db
+  mongodb:
+    image: mongo:5.0.8
+    environment:
+      - COMPOSE_HTTP_TIMEOUT=900
+      - DOCKER_CLIENT_TIMEOUT=900
+    entrypoint: mongod --bind_ip "0.0.0.0"
+    networks:
+      - epirus
 
-  stats:
+  web:
+    image: web3labs/epirus-free-web:latest
+    environment:
+      - API_URL=/api
+      - DISPLAY_NETWORK_TAB=disabled
     depends_on:
-      - stats-db
-    extends:
-      file: ./services/blockscout/docker-compose-stats.yml
-      service: stats
+      - api
+    networks:
+      - epirus
 
-  proxy:
+  ingestion:
+    image: web3labs/epirus-free-ingestion:latest
+    environment:
+      - NODE_ENDPOINT=http://localhost:8545
+      - MONGO_CLIENT_URI=mongodb://mongodb:27017
+      - MONGO_DB_NAME=epirus
     depends_on:
-      - blockscout-backend
-      - blockscout-frontend
-      - stats
-    extends:
-      file: ./services/blockscout/docker-compose-nginx.yml
-      service: proxy
+      - mongodb
+    networks:
+      - epirus
+
+  nginx:
+    image: nginx:latest
+    volumes:
+      - ./services/nginx.conf:/etc/nginx/nginx.conf
+      - ./5xx.html:/www/error_pages/5xx.html
+    ports:
+      - ${PORT:-80}:80
+    depends_on:
+      - api
+      - web
+    networks:
+      - epirus
 
 networks:
   besu-network:
@@ -91,3 +84,10 @@ networks:
       config:
         - subnet: 172.25.0.0/24
 
+  epirus:
+    name: epirus-net
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.16.239.0/24
