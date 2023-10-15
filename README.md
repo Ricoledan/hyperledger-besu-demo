@@ -39,6 +39,12 @@ curl -X POST --data '{"jsonrpc":"2.0","method":"eth_syncing","params":[],"id":1}
 ![Hyperledger Besu Arch Diagram](assets/private-architecture.jpeg?raw=true "Architecture")
 
 
+## Components
+
+### Hyperledger Besu
+### BlockScout
+
+
 ## Features
 - [ ] Configure Network Params
 - [ ] Enforce Free Gas Price

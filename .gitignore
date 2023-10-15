@@ -20,3 +20,5 @@ network/node-1/data/DATABASE_METADATA.json
 network/node-2/data/DATABASE_METADATA.json
 network/node-3/data/DATABASE_METADATA.json
 network/node-4/data/DATABASE_METADATA.json
+
+.DS_Store
